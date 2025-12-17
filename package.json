@@ -1,0 +1,35 @@
+{
+  "name": "realm2json",
+  "version": "1.0.0",
+  "description": "CLI tool to convert Realm database files to JSON format",
+  "author": {
+    "name": "Realm",
+    "email": "info@realm.io",
+    "url": "https://realm.io"
+  },
+  "repository": "https://github.com/realm/realm-studio",
+  "license": "Apache-2.0",
+  "main": "dist/index.js",
+  "bin": {
+    "realm2json": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "commander": "^12.0.0",
+    "flatted": "^3.3.1",
+    "fs-extra": "^11.2.0",
+    "realm": "^12.9.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^20.12.2",
+    "typescript": "^5.4.3"
+  },
+  "engines": {
+    "node": "^18"
+  }
+}
+
