@@ -188,7 +188,8 @@ program
       console.log('\n' + '='.repeat(50));
       console.log('Batch Export Summary:');
       console.log('='.repeat(50));
-      console.log(`Total files processed: ${result.successful.length + result.failed.length}`);
+      const totalFiles = result.successful.length + result.failed.length;
+      console.log(`Total ${totalFiles === 1 ? 'file' : 'files'} processed: ${totalFiles}`);
       console.log(`Successful: ${result.successful.length}`);
       console.log(`Failed: ${result.failed.length}`);
 
