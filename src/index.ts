@@ -86,7 +86,7 @@ const exportBatchRealmsToJSON = (inputDir: string, outputDir: string): BatchResu
     return result;
   }
 
-  console.log(`Found ${realmFiles.length} realm file(s) to process`);
+  console.log(`Found ${realmFiles.length} realm ${realmFiles.length === 1 ? 'file' : 'files'} to process`);
 
   // Process each realm file
   realmFiles.forEach((file, index) => {
