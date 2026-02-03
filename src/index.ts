@@ -91,7 +91,7 @@ const exportBatchRealmsToJSON = (inputDir: string, outputDir: string): BatchResu
   // Process each realm file
   realmFiles.forEach((file, index) => {
     const inputPath = path.join(inputDir, file);
-    const outputFileName = `${path.basename(file, '.realm')}.json`;
+    const outputFileName = `${path.basename(file, path.extname(file))}.json`;
     const outputPath = path.join(outputDir, outputFileName);
 
     console.log(`\n[${index + 1}/${realmFiles.length}] Processing: ${file}`);
