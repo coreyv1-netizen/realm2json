@@ -1,0 +1,68 @@
+name: Forensic Toolkit CI/CD
+
+on:
+  push:
+    branches: [ main, develop, copilot/** ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Build TypeScript
+      run: npm run build
+    
+    - name: Run tests
+      run: npm test
+      env:
+        FORENSIC_CASE_ID: TEST-CI
+        FORENSIC_INVESTIGATOR: CI-System
+        FORENSIC_CASE_NAME: CI Test Case
+
+  validate-modules:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Validate module structure
+      run: |
+        echo "Validating forensic toolkit modules..."
+        
+        # Check that all required modules exist
+        modules=(
+          "modules/audit_trail.ts"
+          "modules/acquisition/acquisition.ts"
+          "modules/parsing/realm_parser.ts"
+          "config/forensic_config.ts"
+        )
+        
+        for module in "${modules[@]}"; do
+          if [ -f "$module" ]; then
+            echo "✓ $module exists"
+          else
+            echo "✗ $module missing"
+            exit 1
+          fi
+        done
+        
+        echo "All modules validated successfully!"

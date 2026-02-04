@@ -5,7 +5,7 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": ".",
     "strict": true,
     "noUnusedLocals": true,
     "noImplicitAny": true,
@@ -13,8 +13,8 @@
     "sourceMap": true,
     "typeRoots": ["node_modules/@types"]
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src/**/*.ts", "modules/**/*.ts", "config/**/*.ts"],
+  "exclude": ["node_modules", "dist", "tests"]
 }
 
 
