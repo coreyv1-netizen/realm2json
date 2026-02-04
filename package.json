@@ -1,7 +1,7 @@
 {
   "name": "realm2json",
   "version": "1.0.0",
-  "description": "CLI tool to convert Realm database files to JSON format",
+  "description": "Universal Forensic Toolkit - Modular, AI-Assisted, Multi-Domain forensic analysis",
   "author": {
     "name": "Realm",
     "email": "info@realm.io",
@@ -11,10 +11,14 @@
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "bin": {
-    "realm2json": "dist/index.js"
+    "realm2json": "dist/index.js",
+    "forensic-toolkit": "dist/forensic-cli.js"
   },
   "scripts": {
     "build": "tsc",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "echo 'Linting not configured yet'",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
@@ -25,11 +29,13 @@
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
+    "@types/jest": "^29.5.14",
     "@types/node": "^20.12.2",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.4.6",
     "typescript": "^5.4.3"
   },
   "engines": {
     "node": "^18"
   }
 }
-

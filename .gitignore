@@ -3,4 +3,41 @@ dist/
 *.log
 .DS_Store
 
+# Compiled TypeScript
+*.js
+*.js.map
+*.d.ts
+!jest.config.js
+
+# Keep source files
+!src/**/*.js
+
+# Environment
+.env
+.env.local
+
+# Test coverage
+coverage/
+*.lcov
+
+# Forensic workspace artifacts
+evidence/
+output/
+temp/
+logs/
+reports/
+
+# Test files
+*.test.realm
+test-data/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+
 
