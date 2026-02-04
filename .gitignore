@@ -3,6 +3,15 @@ dist/
 *.log
 .DS_Store
 
+# Compiled TypeScript
+*.js
+*.js.map
+*.d.ts
+!jest.config.js
+
+# Keep source files
+!src/**/*.js
+
 # Environment
 .env
 .env.local
