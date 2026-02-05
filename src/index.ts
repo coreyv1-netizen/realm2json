@@ -61,12 +61,84 @@ const exportRealmToJSON = (realmPath: string, outputPath: string): void => {
   }
 };
 
+interface BatchError {
+  file: string;
+  error: string;
+}
+
+const batchExportRealmToJSON = (inputDir: string, outputDir: string): void => {
+  const inputPath = path.resolve(inputDir);
+  const outputPath = path.resolve(outputDir);
+
+  // Validate input directory exists
+  if (!fs.existsSync(inputPath)) {
+    console.error(`Error: Input directory does not exist: ${inputPath}`);
+    process.exit(1);
+  }
+
+  // Validate input is a directory
+  if (!fs.statSync(inputPath).isDirectory()) {
+    console.error(`Error: Input path must be a directory: ${inputPath}`);
+    process.exit(1);
+  }
+
+  // Create output directory if it doesn't exist
+  if (!fs.existsSync(outputPath)) {
+    fs.mkdirSync(outputPath, { recursive: true });
+  }
+
+  // Find all .realm files (case-insensitive)
+  const files = fs.readdirSync(inputPath);
+  const realmFiles = files.filter(file => file.toLowerCase().endsWith('.realm'));
+
+  if (realmFiles.length === 0) {
+    console.log('No .realm files found in the input directory');
+    return;
+  }
+
+  console.log(`Found ${realmFiles.length} .realm ${realmFiles.length === 1 ? 'file' : 'files'} to process`);
+
+  const errors: BatchError[] = [];
+  let successCount = 0;
+
+  // Process each realm file
+  for (const file of realmFiles) {
+    const realmFilePath = path.join(inputPath, file);
+    const jsonFileName = file.replace(/\.realm$/i, '.json');
+    const jsonFilePath = path.join(outputPath, jsonFileName);
+
+    try {
+      exportRealmToJSON(realmFilePath, jsonFilePath);
+      successCount++;
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      errors.push({ file, error: errorMessage });
+      console.error(`Failed to process ${file}: ${errorMessage}`);
+    }
+  }
+
+  // Print summary
+  console.log('\n--- Batch Processing Summary ---');
+  console.log(`Successfully converted: ${successCount} ${successCount === 1 ? 'file' : 'files'}`);
+  if (errors.length > 0) {
+    console.log(`Failed: ${errors.length} ${errors.length === 1 ? 'file' : 'files'}`);
+    console.log('\nErrors:');
+    errors.forEach(({ file, error }) => {
+      console.log(`  - ${file}: ${error}`);
+    });
+    process.exit(1);
+  }
+};
+
 const program = new Command();
 
 program
   .name('realm2json')
   .description('Convert a Realm database file to JSON format')
-  .version('1.0.0')
+  .version('1.0.0');
+
+// Single file conversion command
+program
   .argument('<input>', 'Path to the input .realm file')
   .argument('<output>', 'Path to the output .json file')
   .action((input: string, output: string) => {
@@ -101,6 +173,16 @@ program
       }
       process.exit(1);
     }
+  });
+
+// Batch conversion command
+program
+  .command('batch')
+  .description('Convert multiple Realm database files from a directory to JSON format')
+  .argument('<input-dir>', 'Path to the input directory containing .realm files')
+  .argument('<output-dir>', 'Path to the output directory for JSON files')
+  .action((inputDir: string, outputDir: string) => {
+    batchExportRealmToJSON(inputDir, outputDir);
   });
 
 program.parse();
