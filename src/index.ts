@@ -182,16 +182,7 @@ program
   .argument('<input-dir>', 'Path to the input directory containing .realm files')
   .argument('<output-dir>', 'Path to the output directory for JSON files')
   .action((inputDir: string, outputDir: string) => {
-    try {
-      batchExportRealmToJSON(inputDir, outputDir);
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error(`Error: ${error.message}`);
-      } else {
-        console.error(`Error: ${String(error)}`);
-      }
-      process.exit(1);
-    }
+    batchExportRealmToJSON(inputDir, outputDir);
   });
 
 program.parse();
